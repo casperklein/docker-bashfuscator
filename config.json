@@ -1,0 +1,6 @@
+{
+  "user": "casperklein",
+  "name": "docker-bashfuscator",
+  "image": "casperklein/bashfuscator",
+  "version": "0.1"
+}
