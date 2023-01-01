@@ -1,17 +1,17 @@
 FROM	debian:10-slim as build
 
-ENV	GIT_USER="Bashfuscator"
-ENV	GIT_REPO="Bashfuscator"
-ENV	GIT_COMMIT="7487348da2d0112213f8540ae28bf12b652f924a"
-ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
+ARG	GIT_USER="Bashfuscator"
+ARG	GIT_REPO="Bashfuscator"
+ARG	GIT_COMMIT="7487348da2d0112213f8540ae28bf12b652f924a"
+ARG	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
-ENV	PACKAGES="python3 python3-pip python3-argcomplete python3-setuptools"
-ENV	PACKAGES_CLEAN="python3-pip"
+ARG	PACKAGES="python3 python3-pip python3-argcomplete python3-setuptools"
+ARG	PACKAGES_CLEAN="python3-pip"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install packages
-ENV	DEBIAN_FRONTEND=noninteractive
+ARG	DEBIAN_FRONTEND=noninteractive
 RUN	apt-get update \
 &&	apt-get -y upgrade \
 &&	apt-get -y --no-install-recommends install $PACKAGES \
@@ -34,8 +34,12 @@ RUN	apt-get -y purge $PACKAGES_CLEAN \
 # Build final image
 FROM	scratch
 
-ARG	VERSION
-LABEL	Version=$VERSION
+ARG	VERSION="unknown"
+
+LABEL	org.opencontainers.image.description="Dockerized bashfuscator"
+LABEL	org.opencontainers.image.source="https://github.com/casperklein/docker-bashfuscator/"
+LABEL	org.opencontainers.image.title="docker-bashfuscator"
+LABEL	org.opencontainers.image.version="$VERSION"
 
 ENTRYPOINT ["/root/.local/bin/bashfuscator"]
 
