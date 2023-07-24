@@ -1,4 +1,4 @@
-FROM	debian:10-slim as build
+FROM	debian:11-slim as build
 
 ARG	GIT_USER="Bashfuscator"
 ARG	GIT_REPO="Bashfuscator"
