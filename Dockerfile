@@ -1,4 +1,4 @@
-FROM	debian:12-slim as build
+FROM	debian:12-slim AS build
 
 ARG	GIT_USER="Bashfuscator"
 ARG	GIT_REPO="Bashfuscator"
@@ -23,9 +23,9 @@ ADD	$GIT_ARCHIVE /
 RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 
 # If this is set to a non-empty string, Python won’t try to write .pyc files on the import of source modules.
-ENV	PYTHONDONTWRITEBYTECODE 1
+ENV	PYTHONDONTWRITEBYTECODE=1
 # Force the stdout and stderr streams to be unbuffered. This option has no effect on the stdin stream.
-ENV	PYTHONUNBUFFERED 1
+ENV	PYTHONUNBUFFERED=1
 
 ENV	VIRTUAL_ENV=/venv
 RUN	python3 -m venv "$VIRTUAL_ENV"
@@ -35,7 +35,7 @@ ENV	PATH="$VIRTUAL_ENV/bin:$PATH"
 # RUN	python3 setup.py install --user
 RUN	pip3 install .
 
-FROM	alpine as final
+FROM	alpine AS final
 
 ARG	PACKAGES="python3"
 
@@ -48,9 +48,9 @@ COPY --from=build /venv /venv
 FROM	scratch
 
 # If this is set to a non-empty string, Python won’t try to write .pyc files on the import of source modules.
-ENV	PYTHONDONTWRITEBYTECODE 1
+ENV	PYTHONDONTWRITEBYTECODE=1
 # Force the stdout and stderr streams to be unbuffered. This option has no effect on the stdin stream.
-ENV	PYTHONUNBUFFERED 1
+ENV	PYTHONUNBUFFERED=1
 
 ENV	VIRTUAL_ENV=/venv
 ENV	PATH="$VIRTUAL_ENV/bin:$PATH"
